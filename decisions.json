@@ -1,0 +1,66 @@
+{
+    "Career": [
+        "I decided to change my career.",
+        "I decided to start my own business.",
+        "I decided to retire early.",
+        "I decided to join the military.",
+        "I decided to quit my job without another lined up.",
+        "I decided to relocate for a job."
+    ],
+    "Personal Life": [
+        "I decided to have children.",
+        "I decided to get married.",
+        "I decided to adopt a pet.",
+        "I decided to foster a child.",
+        "I decided to move in with my partner.",
+        "I decided to end a long-term relationship."
+    ],
+    "Health": [
+        "I decided to switch to a plant-based diet.",
+        "I decided to undergo a major surgery.",
+        "I decided to quit smoking.",
+        "I decided to lose a significant amount of weight.",
+        "I decided to join a fitness program.",
+        "I decided to adopt a healthier lifestyle."
+    ],
+    "Education": [
+        "I decided to go back to school.",
+        "I decided to write a book.",
+        "I decided to start a blog.",
+        "I decided to take a professional certification.",
+        "I decided to learn to code.",
+        "I decided to attend a major event."
+    ],
+    "Travel": [
+        "I decided to take a gap year.",
+        "I decided to go on a world tour.",
+        "I decided to take a sabbatical.",
+        "I decided to take a cruise.",
+        "I decided to travel solo.",
+        "I decided to relocate internationally for work."
+    ],
+    "Finance": [
+        "I decided to invest in the stock market.",
+        "I decided to buy a house.",
+        "I decided to donate a large sum to charity.",
+        "I decided to open a savings account.",
+        "I decided to buy a second home.",
+        "I decided to buy an electric vehicle."
+    ],
+    "Hobbies": [
+        "I decided to start a YouTube channel.",
+        "I decided to learn a new language.",
+        "I decided to take up a new sport.",
+        "I decided to start a new hobby.",
+        "I decided to start a podcast.",
+        "I decided to learn to dance.",
+        "I decided to build a custom PC."
+    ],
+    "Others": [
+        "I decided to adopt a minimalist lifestyle.",
+        "I decided to switch political parties.",
+        "I decided to become a digital nomad.",
+        "I decided to participate in a reality show.",
+        "I decided to mentor a young professional."
+    ]
+}
