@@ -40,27 +40,68 @@ async function loadDecisions() {
 	
 
 // Fetch data from Airtable and display cards
+// Fetch data from your serverless function
 async function fetchData() {
     try {
-        const response = await fetch(`https://api.airtable.com/v0/${airtableBaseId}/${airtableTableName}`, {
-            headers: {
-                Authorization: `Bearer ${airtablePersonalAccessToken}`
-            }
-        });
-
+        const response = await fetch('/api/records');
         if (!response.ok) {
-            console.error('Failed to fetch data from Airtable:', response.statusText);
+            console.error('Failed to fetch data from server:', response.statusText);
             return;
         }
-
         const data = await response.json();
         allRecords = data.records;
-        console.log('Data fetched from Airtable:', data);
+        console.log('Data fetched from server:', data);
         displayCards(allRecords);
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 }
+
+// Submit data through your serverless function
+async function submitData(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('userInput').value;
+    const decision = document.getElementById('decisionInput').value;
+    const reasoning = document.getElementById('reasoningInput').value;
+    const regret = document.getElementById('regretInput').value;
+
+    if (!validateEmail(email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    const newRecord = {
+        User: email,
+        Decision: decision,
+        Reasoning: reasoning,
+        Regret: regret
+    };
+
+    try {
+        const response = await fetch('/api/records', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newRecord)
+        });
+
+        if (!response.ok) {
+            console.error('Failed to write data to server:', response.statusText);
+            return;
+        }
+
+        const data = await response.json();
+        console.log('Data written to server:', data);
+        fetchData();
+    } catch (error) {
+        console.error('Error writing data:', error);
+    }
+
+    document.getElementById('entryForm').reset();
+}
+
 
 // Display cards with decision counts
 function displayCards(records) {
