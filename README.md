@@ -6,5 +6,6 @@ Search for an interest, click on a card to read people's reasoning behind their 
 ## Tech Stack
 <ul>💻 HTML</ul>
 <ul>💻 JavaScript</ul>
+<ul>💨 AirTable</ul>
 <ul>🛫 Tailwind CSS</ul>
 <ul>☁️ Vercel</ul>
