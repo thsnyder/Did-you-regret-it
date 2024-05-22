@@ -4,7 +4,7 @@ Hi! Welcome to Did You Regret It, a directory about life decisions, why people m
 Search for an interest, click on a card to read people's reasoning behind their decision, and add your own! ✌️
 
 ## Tech Stack
-<ul>HTML</ul>
-<ul>JavaScript</ul>
-<ul>Tailwind CSS</ul>
-<ul>Vercel</ul>
+<ul>💻 HTML</ul>
+<ul>💻 JavaScript</ul>
+<ul>🛫 Tailwind CSS</ul>
+<ul>☁️ Vercel</ul>
