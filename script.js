@@ -1,4 +1,3 @@
-// const airtablePersonalAccessToken = 'patvl8k9ZHBs6NPga.53d72d052adfc008b72b446bac891991c45ac8a67c8f2fc94eb41e4ff614bb14';
 // const airtableBaseId = 'appMq2KDA1JTJLW2f';
 // const airtableTableName = 'MainTable';
 
