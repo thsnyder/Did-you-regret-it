@@ -1,8 +1,8 @@
 // api/records.js
 
 const airtablePersonalAccessToken = process.env.AIRTABLE_PERSONAL_ACCESS_TOKEN;
-const airtableBaseId = 'AIRTABLE_BASE_ID';
-const airtableTableName = 'AIRTABLE_TABLE_NAME';
+const airtableBaseId = process.env.AIRTABLE_BASE_ID;
+const airtableTableName = process.env.AIRTABLE_TABLE_NAME;
 
 export default async (req, res) => {
     if (req.method === 'GET') {
