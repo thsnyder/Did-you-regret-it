@@ -56,7 +56,8 @@ async function fetchData() {
     }
 }
 
-// Submit data through your serverless functionasync function submitData(event) {
+// Submit data through your serverless function
+async function submitData(event) {
     event.preventDefault();
 
     const email = document.getElementById('userInput').value;
