@@ -56,8 +56,7 @@ async function fetchData() {
     }
 }
 
-// Submit data through your serverless function
-async function submitData(event) {
+// Submit data through your serverless functionasync function submitData(event) {
     event.preventDefault();
 
     const email = document.getElementById('userInput').value;
@@ -71,10 +70,12 @@ async function submitData(event) {
     }
 
     const newRecord = {
-        User: email,
-        Decision: decision,
-        Reasoning: reasoning,
-        Regret: regret
+        fields: {
+            User: email,
+            Decision: decision,
+            Reasoning: reasoning,
+            Regret: regret
+        }
     };
 
     try {
@@ -100,6 +101,9 @@ async function submitData(event) {
 
     document.getElementById('entryForm').reset();
 }
+
+//document.getElementById('entryForm').addEventListener('submit', submitData);
+
 
 
 // Display cards with decision counts
