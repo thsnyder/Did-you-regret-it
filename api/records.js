@@ -1,7 +1,5 @@
 // api/records.js
 
-const fetch = require('node-fetch');
-
 const airtablePersonalAccessToken = process.env.AIRTABLE_PERSONAL_ACCESS_TOKEN;
 const airtableBaseId = 'appMq2KDA1JTJLW2f';
 const airtableTableName = 'MainTable';
