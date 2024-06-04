@@ -103,7 +103,7 @@ async function submitData(event) {
     document.getElementById('entryForm').reset();
 }
 
-//document.getElementById('entryForm').addEventListener('submit', submitData);
+document.getElementById('entryForm').addEventListener('submit', submitData);
 
 
 
