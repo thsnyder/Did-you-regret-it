@@ -111,7 +111,7 @@ function sortPopular(records) {
 }
 
 function sortRecent(records) {
-    return records.sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime));
+    return records.sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
 }
 
 function sortMostRegretted(records) {
