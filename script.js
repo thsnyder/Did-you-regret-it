@@ -255,6 +255,22 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('entryForm').addEventListener('submit', submitData);
 document.getElementById('searchInput').addEventListener('input', searchRecords);
 
+// Sorting event listeners
+document.getElementById('sortPopular').addEventListener('click', () => {
+    const sortedRecords = sortPopular(allRecords);
+    displayCards(sortedRecords);
+});
+
+document.getElementById('sortRecent').addEventListener('click', () => {
+    const sortedRecords = sortRecent(allRecords);
+    displayCards(sortedRecords);
+});
+
+document.getElementById('sortMostRegretted').addEventListener('click', () => {
+    const sortedRecords = sortMostRegretted(allRecords);
+    displayCards(sortedRecords);
+});
+
 // Get the <span> element that closes the modal
 const span = document.getElementsByClassName('close')[0];
 span.onclick = closeModal;
