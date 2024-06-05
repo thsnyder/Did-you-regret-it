@@ -105,7 +105,18 @@ async function submitData(event) {
 
 document.getElementById('entryForm').addEventListener('submit', submitData);
 
+// Sorting functions
+function sortPopular(records) {
+    return records.sort((a, b) => (b.fields.Yes + b.fields.No) - (a.fields.Yes + a.fields.No));
+}
 
+function sortRecent(records) {
+    return records.sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime));
+}
+
+function sortMostRegretted(records) {
+    return records.sort((a, b) => b.fields.Yes - a.fields.Yes);
+}
 
 // Display cards with decision counts
 function displayCards(records) {
@@ -177,12 +188,6 @@ function showModal(decision, records) {
 function closeModal() {
     const modal = document.getElementById('myModal');
     modal.style.display = 'none';
-}
-
-// Validate email format
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
 }
 
 // Submit data to Airtable
