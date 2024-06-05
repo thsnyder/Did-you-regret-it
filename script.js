@@ -36,6 +36,9 @@ async function loadDecisions() {
     }
 }
 
+	
+
+// Fetch data from Airtable and display cards
 // Fetch data from your serverless function
 async function fetchData() {
     try {
@@ -102,18 +105,7 @@ async function submitData(event) {
 
 document.getElementById('entryForm').addEventListener('submit', submitData);
 
-// Sorting functions
-function sortPopular(records) {
-    return records.sort((a, b) => (b.fields.Yes + b.fields.No) - (a.fields.Yes + a.fields.No));
-}
 
-function sortRecent(records) {
-    return records.sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime));
-}
-
-function sortMostRegretted(records) {
-    return records.sort((a, b) => b.fields.Yes - a.fields.Yes);
-}
 
 // Display cards with decision counts
 function displayCards(records) {
@@ -189,8 +181,56 @@ function closeModal() {
 
 // Validate email format
 function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+$/;
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
+}
+
+// Submit data to Airtable
+async function submitData(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('userInput').value;
+    const decision = document.getElementById('decisionInput').value;
+    const reasoning = document.getElementById('reasoningInput').value;
+    const regret = document.getElementById('regretInput').value;
+
+    if (!validateEmail(email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    const newRecord = {
+        fields: {
+            User: email,
+            Decision: decision,
+            Reasoning: reasoning,
+            Regret: regret
+        }
+    };
+
+    try {
+        const response = await fetch(`https://api.airtable.com/v0/${airtableBaseId}/${airtableTableName}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${airtablePersonalAccessToken}`
+            },
+            body: JSON.stringify(newRecord)
+        });
+
+        if (!response.ok) {
+            console.error('Failed to write data to Airtable:', response.statusText);
+            return;
+        }
+
+        const data = await response.json();
+        console.log('Data written to Airtable:', data);
+        fetchData();
+    } catch (error) {
+        console.error('Error writing data:', error);
+    }
+
+    document.getElementById('entryForm').reset();
 }
 
 // Search records
@@ -214,22 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById('entryForm').addEventListener('submit', submitData);
 document.getElementById('searchInput').addEventListener('input', searchRecords);
-
-// Sorting event listeners
-document.getElementById('sortPopular').addEventListener('click', () => {
-    const sortedRecords = sortPopular(allRecords);
-    displayCards(sortedRecords);
-});
-
-document.getElementById('sortRecent').addEventListener('click', () => {
-    const sortedRecords = sortRecent(allRecords);
-    displayCards(sortedRecords);
-});
-
-document.getElementById('sortMostRegretted').addEventListener('click', () => {
-    const sortedRecords = sortMostRegretted(allRecords);
-    displayCards(sortedRecords);
-});
 
 // Get the <span> element that closes the modal
 const span = document.getElementsByClassName('close')[0];
