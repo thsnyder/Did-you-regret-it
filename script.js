@@ -29,6 +29,85 @@ async function fetchData() {
     }
 }
 
+// Load decisions from decisions.json and populate the select element
+async function loadDecisions() {
+    try {
+        const response = await fetch('decisions.json');
+        if (!response.ok) {
+            throw new Error('Failed to fetch decisions JSON file');
+        }
+        const decisions = await response.json();
+        const decisionSelect = document.getElementById('decisionInput');
+
+        Object.keys(decisions).forEach(group => {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = group;
+            decisions[group].forEach(decision => {
+                const option = document.createElement('option');
+                option.value = decision;
+                option.textContent = decision;
+                optgroup.appendChild(option);
+            });
+            decisionSelect.appendChild(optgroup);
+        });
+    } catch (error) {
+        console.error('Error loading decisions:', error);
+    }
+}
+
+// Handle form submission
+async function submitData(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('userInput').value.trim();
+    const decision = document.getElementById('decisionInput').value;
+    const reasoning = document.getElementById('reasoningInput').value.trim();
+    const regret = document.getElementById('regretInput').value;
+
+    if (!name || !decision || !reasoning || !regret) {
+        alert('Please fill out all fields.');
+        return;
+    }
+
+    const newRecord = {
+        fields: {
+            User: name,
+            Decision: decision,
+            Reasoning: reasoning,
+            Regret: regret
+        }
+    };
+
+    try {
+        const response = await fetch('/api/records', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newRecord)
+        });
+
+        if (!response.ok) {
+            console.error('Failed to submit data to server:', response.statusText);
+            alert('There was an error submitting your data. Please try again later.');
+            return;
+        }
+
+        const data = await response.json();
+        console.log('Data submitted to server:', data);
+        alert('Your decision has been submitted successfully!');
+
+        // Clear the form
+        document.getElementById('entryForm').reset();
+
+        // Refresh data
+        fetchData();
+    } catch (error) {
+        console.error('Error submitting data:', error);
+        alert('There was an error submitting your data. Please try again later.');
+    }
+}
+
 // Display cards with decision counts
 function displayCards(records) {
     const cardsContainer = document.getElementById('cards');
@@ -149,8 +228,11 @@ function sortMostRegretted(decisionsArray) {
 }
 
 // Event listeners
-document.addEventListener('DOMContentLoaded', fetchData);
+document.addEventListener('DOMContentLoaded', () => {
+    loadDecisions().then(fetchData);
+});
 
+document.getElementById('entryForm').addEventListener('submit', submitData);
 document.getElementById('searchInput').addEventListener('input', searchRecords);
 
 // Modal close button
