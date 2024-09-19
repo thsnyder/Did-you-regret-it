@@ -4,41 +4,6 @@
 
 let allRecords = [];
 
-// Fetch decisions from JSON file and populate the select element
-async function loadDecisions() {
-    try {
-        const response = await fetch('decisions.json');
-        if (!response.ok) {
-            throw new Error('Failed to fetch decisions JSON file');
-        }
-        const decisions = await response.json();
-        const decisionSelect = document.getElementById('decisionInput');
-
-        Object.keys(decisions).forEach(group => {
-            const optgroup = document.createElement('optgroup');
-            optgroup.label = group;
-            decisions[group].forEach(decision => {
-                const option = document.createElement('option');
-                option.value = decision;
-                option.textContent = decision;
-                optgroup.appendChild(option);
-            });
-            decisionSelect.appendChild(optgroup);
-        });
-
-        // Initialize Select2 for the decision dropdown
-        $(decisionSelect).select2({
-            placeholder: "Select a Decision",
-            allowClear: true
-        });
-    } catch (error) {
-        console.error('Error loading decisions:', error);
-    }
-}
-
-	
-
-// Fetch data from Airtable and display cards
 // Fetch data from your serverless function
 async function fetchData() {
     try {
@@ -54,68 +19,6 @@ async function fetchData() {
     } catch (error) {
         console.error('Error fetching data:', error);
     }
-}
-
-// Submit data through your serverless function
-async function submitData(event) {
-    event.preventDefault();
-
-    const email = document.getElementById('userInput').value;
-    const decision = document.getElementById('decisionInput').value;
-    const reasoning = document.getElementById('reasoningInput').value;
-    const regret = document.getElementById('regretInput').value;
-
-    if (!validateEmail(email)) {
-        alert('Please enter a valid email address.');
-        return;
-    }
-
-    const newRecord = {
-        fields: {
-            User: email,
-            Decision: decision,
-            Reasoning: reasoning,
-            Regret: regret
-        }
-    };
-
-    try {
-        const response = await fetch('/api/records', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newRecord)
-        });
-
-        if (!response.ok) {
-            console.error('Failed to write data to server:', response.statusText);
-            return;
-        }
-
-        const data = await response.json();
-        console.log('Data written to server:', data);
-        fetchData();
-    } catch (error) {
-        console.error('Error writing data:', error);
-    }
-
-    document.getElementById('entryForm').reset();
-}
-
-document.getElementById('entryForm').addEventListener('submit', submitData);
-
-// Sorting functions
-function sortPopular(records) {
-    return records.sort((a, b) => (b.fields.Yes + b.fields.No) - (a.fields.Yes + a.fields.No));
-}
-
-function sortRecent(records) {
-    return records.sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
-}
-
-function sortMostRegretted(records) {
-    return records.sort((a, b) => b.fields.Yes - a.fields.Yes);
 }
 
 // Display cards with decision counts
@@ -148,7 +51,6 @@ function displayCards(records) {
         card.innerHTML = `
             <h2 class="text-xl font-semibold mb-2">${decision}</h2>
             <div class="flex justify-between">
-                <p class="mb-4">Regretted it: </p>
                 <p class="mb-4">Yes: ${decisions[decision].yes}</p>
                 <p class="mb-4">No: ${decisions[decision].no}</p>
             </div>
@@ -190,100 +92,31 @@ function closeModal() {
     modal.style.display = 'none';
 }
 
-// Submit data to Airtable
-async function submitData(event) {
-    event.preventDefault();
-
-    const email = document.getElementById('userInput').value;
-    const decision = document.getElementById('decisionInput').value;
-    const reasoning = document.getElementById('reasoningInput').value;
-    const regret = document.getElementById('regretInput').value;
-
-    if (!validateEmail(email)) {
-        alert('Please enter a valid email address.');
-        return;
-    }
-
-    const newRecord = {
-        fields: {
-            User: email,
-            Decision: decision,
-            Reasoning: reasoning,
-            Regret: regret
-        }
-    };
-
-    try {
-        const response = await fetch(`https://api.airtable.com/v0/${airtableBaseId}/${airtableTableName}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${airtablePersonalAccessToken}`
-            },
-            body: JSON.stringify(newRecord)
-        });
-
-        if (!response.ok) {
-            console.error('Failed to write data to Airtable:', response.statusText);
-            return;
-        }
-
-        const data = await response.json();
-        console.log('Data written to Airtable:', data);
-        fetchData();
-    } catch (error) {
-        console.error('Error writing data:', error);
-    }
-
-    document.getElementById('entryForm').reset();
-}
-
 // Search records
 function searchRecords(event) {
     const query = event.target.value.toLowerCase();
     const filteredRecords = allRecords.filter(record => {
         return (
-            record.fields.User.toLowerCase().includes(query) ||
-            record.fields.Decision.toLowerCase().includes(query) ||
-            record.fields.Reasoning.toLowerCase().includes(query) ||
-            record.fields.Regret.toLowerCase().includes(query)
+            (record.fields.Decision && record.fields.Decision.toLowerCase().includes(query)) ||
+            (record.fields.Reasoning && record.fields.Reasoning.toLowerCase().includes(query))
         );
     });
     displayCards(filteredRecords);
 }
 
 // Event listeners
-document.addEventListener('DOMContentLoaded', () => {
-    loadDecisions().then(fetchData);
-});
+document.addEventListener('DOMContentLoaded', fetchData);
 
-document.getElementById('entryForm').addEventListener('submit', submitData);
 document.getElementById('searchInput').addEventListener('input', searchRecords);
 
-// Sorting event listeners
-document.getElementById('sortPopular').addEventListener('click', () => {
-    const sortedRecords = sortPopular(allRecords);
-    displayCards(sortedRecords);
-});
+// Modal close button
+const closeButton = document.querySelector('.modal .close');
+closeButton.addEventListener('click', closeModal);
 
-document.getElementById('sortRecent').addEventListener('click', () => {
-    const sortedRecords = sortRecent(allRecords);
-    displayCards(sortedRecords);
-});
-
-document.getElementById('sortMostRegretted').addEventListener('click', () => {
-    const sortedRecords = sortMostRegretted(allRecords);
-    displayCards(sortedRecords);
-});
-
-// Get the <span> element that closes the modal
-const span = document.getElementsByClassName('close')[0];
-span.onclick = closeModal;
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
+// Close modal when clicking outside of it
+window.addEventListener('click', function(event) {
     const modal = document.getElementById('myModal');
-    if (event.target == modal) {
-        modal.style.display = 'none';
+    if (event.target === modal) {
+        closeModal();
     }
-};
+});
