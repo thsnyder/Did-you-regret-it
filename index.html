@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Essential Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Did you regret it?</title>
+    <title>Did You Regret It?</title>
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Did You Regret It?">
     <meta property="og:description" content="A free directory about life decisions, why people made them, and whether they're satisfied with that decision.">
-    <meta property="og:image" content="https://didyouregretit.com/Did You Regret It social share.png">
+    <meta property="og:image" content="https://didyouregretit.com/DidYouRegretIt_social_share.png">
     <meta property="og:url" content="https://didyouregretit.com">
     <meta property="og:type" content="website">
 
@@ -16,20 +17,21 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Did You Regret It?">
     <meta name="twitter:description" content="A free directory about life decisions, why people made them, and whether they're satisfied with that decision.">
-    <meta name="twitter:image" content="https://didyouregretit.com/Did You Regret It social share.png">
+    <meta name="twitter:image" content="https://didyouregretit.com/DidYouRegretIt_social_share.png">
 
-	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-1VERWJF049"></script>
-	<script>
- 	 window.dataLayer = window.dataLayer || [];
-  	 function gtag(){dataLayer.push(arguments);}
-	 gtag('js', new Date());
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1VERWJF049"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1VERWJF049');
+    </script>
 
-  	 gtag('config', 'G-1VERWJF049');
-	</script>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
     <style>
         .bg-gradient {
             background: linear-gradient(75deg, #00FFFF, #FF69B4);
@@ -66,36 +68,27 @@
             background-color: rgba(0,0,0,0.4);
         }
         .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
+            background-color: #fff;
+            margin: 10% auto;
             padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
+            width: 90%;
             max-width: 500px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
         .close {
             color: #aaa;
-            float: right;
+            position: absolute;
+            right: 20px;
+            top: 15px;
             font-size: 28px;
             font-weight: bold;
         }
         .close:hover,
         .close:focus {
-            color: black;
+            color: #000;
             text-decoration: none;
             cursor: pointer;
-        }
-        .record-divider {
-            border-top: 1px solid #ddd;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-        .footer {
-            margin-top: 50px;
-            text-align: center;
-            padding: 20px;
         }
         .footer a {
             color: #FF69B4;
@@ -120,50 +113,43 @@
     </style>
 </head>
 <body class="bg-gradient flex flex-col items-center min-h-screen">
-    <div id="app" class="w-full max-w-4xl p-4 mb-20">
+    <header class="w-full max-w-4xl p-4">
         <div class="header-container mb-8">
-            <h1 class="text-3xl font-bold text-center glow" style="color: white;">Did You Regret It?</h1>
+            <h1 class="text-3xl font-bold text-center glow text-white">Did You Regret It?</h1>
         </div>
-        <div class="white-container mb-8">
-            <p>Hi! Welcome to Did You Regret It, a directory about life decisions, why people made them, and whether they're satisfied with that decision. <br>Search for an interest, click on a card to read people's reasoning behind their decision, and add your own! ✌️</p>
+    </header>
+
+    <main id="app" class="w-full max-w-4xl p-4 flex-grow">
+        <div class="white-container mb-8 text-center">
+            <p>Hi! Welcome to <strong>Did You Regret It</strong>, a directory about life decisions, why people made them, and whether they're satisfied with that decision.</p>
+            <p>Search for an interest, click on a card to read people's reasoning behind their decision, and add your own! ✌️</p>
         </div>
-         <form id="entryForm" class="mb-8">
-<!--             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <input type="email" id="userInput" placeholder="Email" class="p-3 text-lg border rounded w-full col-span-1 md:col-span-2 lg:col-span-1" required>
-                <select id="decisionInput" class="p-3 text-lg border rounded w-full col-span-1 md:col-span-2 lg:col-span-1" required>
-                    <option value="">Select a Decision</option>
-                </select>
-                <textarea id="reasoningInput" placeholder="Reasoning" class="p-3 text-lg border rounded w-full col-span-1 md:col-span-4" required></textarea>
-                <select id="regretInput" class="p-3 text-lg border rounded w-full col-span-1 md:col-span-2 lg:col-span-1" required>
-                    <option value="">Regret</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
-            </div> -->
-<!--             <button type="submit" class="mt-4 btn-gradient w-full">Submit</button> -->
-            <a href="https://airtable.com/appMq2KDA1JTJLW2f/paggOeQj2EzYgLZIi/form" class="mt-4 btn-gradient w-full" target="_blank">Submit My Own</a>
-        </form>
-	<div class="mb-4">
-        	<input type="text" id="searchInput" placeholder="Search by keyword" class="mb-4 p-3 text-lg border rounded w-full">
-<!-- 		<div class="flex gap-2 justify-left">
-                	<button id="sortPopular" class="btn-gradient">Popular</button>
-                	<button id="sortRecent" class="btn-gradient">Recent</button>
-                	<button id="sortMostRegretted" class="btn-gradient">Most Regretted</button>
-            	</div> -->
-	</div>
+
+        <div class="mb-8 text-center">
+            <a href="https://airtable.com/appMq2KDA1JTJLW2f/paggOeQj2EzYgLZIi/form" class="btn-gradient inline-block" target="_blank">Submit My Own</a>
+        </div>
+
+        <div class="mb-8">
+            <input type="text" id="searchInput" placeholder="Search by keyword" class="p-3 text-lg border rounded w-full" aria-label="Search">
+        </div>
+
         <div id="cards" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
-    </div>
-    <div id="myModal" class="modal">
+    </main>
+
+    <!-- Modal Structure -->
+    <div id="myModal" class="modal" aria-hidden="true">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <button class="close" aria-label="Close">&times;</button>
             <h2 id="modalTitle" class="text-xl font-bold mb-4"></h2>
             <div id="modalContent"></div>
-            <button class="btn-gradient mt-4" onclick="closeModal()">Close</button>
         </div>
     </div>
-    <footer class="footer">
-        Made with 🩷 by <a href="https://turbologic.io" target="_blank">Turbo Logic</a> | Have feedback? <a href="mailto:tom@turbologic.io">Email me</a>
+
+    <footer class="footer p-4 text-center">
+        Made with 🩷 by <a href="https://turbologic.io" target="_blank" rel="noopener">Turbo Logic</a> | Have feedback? <a href="mailto:tom@turbologic.io">Email me</a>
     </footer>
-    <script src="script.js"></script>
+
+    <!-- External Script -->
+    <script src="script.js" defer></script>
 </body>
 </html>
