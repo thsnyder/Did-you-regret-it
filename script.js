@@ -3,6 +3,7 @@
 
 
 let allRecords = [];
+let currentSortFunction = null;
 
 // Fetch data from your serverless function
 async function fetchData() {
@@ -15,7 +16,14 @@ async function fetchData() {
         const data = await response.json();
         allRecords = data.records;
         console.log('Data fetched from server:', data);
-        displayCards(allRecords);
+
+        // Apply current sort function if any
+        let recordsToDisplay = allRecords;
+        if (currentSortFunction) {
+            recordsToDisplay = currentSortFunction(allRecords);
+        }
+
+        displayCards(recordsToDisplay);
     } catch (error) {
         console.error('Error fetching data:', error);
     }
@@ -31,9 +39,10 @@ function displayCards(records) {
     records.forEach(record => {
         const decision = record.fields.Decision;
         const regret = record.fields.Regret;
+        const createdAt = record.createdTime;
 
         if (!decisions[decision]) {
-            decisions[decision] = { yes: 0, no: 0, records: [] };
+            decisions[decision] = { yes: 0, no: 0, records: [], createdAt };
         }
 
         decisions[decision].records.push(record);
@@ -45,17 +54,33 @@ function displayCards(records) {
         }
     });
 
-    Object.keys(decisions).forEach(decision => {
+    // Convert decisions object to an array for sorting
+    let decisionsArray = Object.keys(decisions).map(decision => {
+        return {
+            decision,
+            yes: decisions[decision].yes,
+            no: decisions[decision].no,
+            records: decisions[decision].records,
+            createdAt: decisions[decision].createdAt
+        };
+    });
+
+    // Apply current sort function if any
+    if (currentSortFunction) {
+        decisionsArray = currentSortFunction(decisionsArray);
+    }
+
+    decisionsArray.forEach(item => {
         const card = document.createElement('div');
         card.className = 'bg-white rounded-lg shadow p-6 outline-cool cursor-pointer';
         card.innerHTML = `
-            <h2 class="text-xl font-semibold mb-2">${decision}</h2>
+            <h2 class="text-xl font-semibold mb-2">${item.decision}</h2>
             <div class="flex justify-between">
-                <p class="mb-4">Yes: ${decisions[decision].yes}</p>
-                <p class="mb-4">No: ${decisions[decision].no}</p>
+                <p class="mb-4">Yes: ${item.yes}</p>
+                <p class="mb-4">No: ${item.no}</p>
             </div>
         `;
-        card.addEventListener('click', () => showModal(decision, decisions[decision].records));
+        card.addEventListener('click', () => showModal(item.decision, item.records));
         cardsContainer.appendChild(card);
     });
 }
@@ -95,13 +120,32 @@ function closeModal() {
 // Search records
 function searchRecords(event) {
     const query = event.target.value.toLowerCase();
-    const filteredRecords = allRecords.filter(record => {
+    let filteredRecords = allRecords.filter(record => {
         return (
             (record.fields.Decision && record.fields.Decision.toLowerCase().includes(query)) ||
             (record.fields.Reasoning && record.fields.Reasoning.toLowerCase().includes(query))
         );
     });
+
+    // Apply current sort function if any
+    if (currentSortFunction) {
+        filteredRecords = currentSortFunction(filteredRecords);
+    }
+
     displayCards(filteredRecords);
+}
+
+// Sorting functions
+function sortPopular(decisionsArray) {
+    return decisionsArray.sort((a, b) => (b.yes + b.no) - (a.yes + a.no));
+}
+
+function sortRecent(decisionsArray) {
+    return decisionsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+function sortMostRegretted(decisionsArray) {
+    return decisionsArray.sort((a, b) => b.yes - a.yes);
 }
 
 // Event listeners
@@ -120,3 +164,20 @@ window.addEventListener('click', function(event) {
         closeModal();
     }
 });
+
+// Sorting event listeners
+document.getElementById('sortPopular').addEventListener('click', () => {
+    currentSortFunction = sortPopular;
+    fetchData();
+});
+
+document.getElementById('sortRecent').addEventListener('click', () => {
+    currentSortFunction = sortRecent;
+    fetchData();
+});
+
+document.getElementById('sortMostRegretted').addEventListener('click', () => {
+    currentSortFunction = sortMostRegretted;
+    fetchData();
+});
+
