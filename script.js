@@ -173,7 +173,7 @@ function showModal(decision, records) {
     modalTitle.textContent = decision;
     modalContent.innerHTML = '';
 
-    records.forEach(record => {
+    records.forEach((record, index) => {
         const recordDiv = document.createElement('div');
         recordDiv.className = 'record';
         recordDiv.innerHTML = `
@@ -182,13 +182,17 @@ function showModal(decision, records) {
         `;
         modalContent.appendChild(recordDiv);
 
-        const divider = document.createElement('div');
-        divider.className = 'record-divider';
-        modalContent.appendChild(divider);
+        // Add a divider except after the last record
+        if (index < records.length - 1) {
+            const divider = document.createElement('div');
+            divider.className = 'record-divider';
+            modalContent.appendChild(divider);
+        }
     });
 
     modal.style.display = 'block';
 }
+
 
 // Close modal
 function closeModal() {
