@@ -125,6 +125,21 @@
             <p>Search for an interest, click on a card to read people's reasoning behind their decision, and add your own! ✌️</p>
         </div>
 
+        <form id="entryForm" class="mb-8">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <input type="email" id="userInput" placeholder="Email" class="p-3 text-lg border rounded w-full col-span-1 md:col-span-2 lg:col-span-1" required>
+                <select id="decisionInput" class="p-3 text-lg border rounded w-full col-span-1 md:col-span-2 lg:col-span-1" required>
+                    <option value="">Select a Decision</option>
+                </select>
+                <textarea id="reasoningInput" placeholder="Reasoning" class="p-3 text-lg border rounded w-full col-span-1 md:col-span-4" required></textarea>
+                <select id="regretInput" class="p-3 text-lg border rounded w-full col-span-1 md:col-span-2 lg:col-span-1" required>
+                    <option value="">Regret</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <button type="submit" class="mt-4 btn-gradient w-full">Submit</button>
+
         <div class="mb-8 text-center">
             <a href="https://airtable.com/appMq2KDA1JTJLW2f/paggOeQj2EzYgLZIi/form" class="btn-gradient inline-block" target="_blank">Submit My Own</a>
         </div>
