@@ -43,17 +43,18 @@
         .glow {
             text-shadow: 0 0 10px rgba(255, 105, 180, 0.8), 0 0 20px rgba(255, 105, 180, 0.6), 0 0 30px rgba(255, 105, 180, 0.4);
         }
-        .btn-style {
-            background: #a78bfa;
-            color: black;
+        .btn-gradient {
+            background: linear-gradient(135deg, #00FFFF, #FF69B4);
+            color: white;
             padding: 0.5rem 1rem;
-            border-radius: 0;
-            border: 2px solid black;
+            border-radius: 0.25rem;
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #FF69B4, #00FFFF) 1;
             cursor: pointer;
             transition: transform 0.2s;
         }
         .btn-gradient:hover {
-            transform: #c084fc;
+            transform: scale(1.05);
         }
         .modal {
             display: none;
@@ -122,7 +123,7 @@
 
     </style>
 </head>
-<body class="bg-[#22d3ee] flex flex-col items-center min-h-screen">
+<body class="bg-gradient flex flex-col items-center min-h-screen">
     <header class="w-full max-w-4xl p-4">
         <div class="header-container mb-8">
             <h1 class="text-3xl font-bold text-center glow text-white">Did You Regret It?</h1>
@@ -156,9 +157,9 @@
         </div>
 
         <div class="flex gap-2 justify-center mb-4">
-            <button id="sortPopular" class="btn-style">Popular</button>
-            <button id="sortRecent" class="btn-style">Recent</button>
-            <button id="sortMostRegretted" class="btn-style">Most Regretted</button>
+            <button id="sortPopular" class="btn-gradient">Popular</button>
+            <button id="sortRecent" class="btn-gradient">Recent</button>
+            <button id="sortMostRegretted" class="btn-gradient">Most Regretted</button>
         </div>
 
         <div id="cards" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
